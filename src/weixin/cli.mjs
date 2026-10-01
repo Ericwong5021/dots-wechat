@@ -7,14 +7,18 @@ import { createInterface } from 'node:readline/promises';
 import { createWeixinQrBinding, WEIXIN_BINDING_PROTOCOL } from './binding.mjs';
 import { createWeixinTextClient } from './client.mjs';
 import { createPrivateStateStore } from './private-state-store.mjs';
+import { agentLocalLogout } from './agent-logout.mjs';
 
 export const CLI_USAGE = `node src/weixin/cli.mjs login --state-dir PATH
 node src/weixin/cli.mjs login --state-dir ABSOLUTE_PATH --agent-confirmed-consent --agent-consent-scope new-binding,owner-scan,local-credentials
 node src/weixin/cli.mjs status --state-dir PATH
 node src/weixin/cli.mjs verify --state-dir PATH --expect TEXT [--reply-text TEXT] [--max-polls 1..10] [--timeout-seconds 1..120]
 node src/weixin/cli.mjs logout --state-dir PATH
+node src/weixin/cli.mjs logout --state-dir ABSOLUTE_PATH --agent-confirmed-consent --agent-consent-scope local-credentials,local-verify-state
 Ordinary login and logout require an interactive terminal and typed confirmation.
-Agent login flags only bypass the terminal guard after specific current-session user authorization; installation is not consent.
+Agent flags are technical declarations, not cryptographic owner proof or user consent.
+Agent logout requires prior current-session authorization of the exact state directory and both local deletion scopes.
+Remote revocation is not attempted or confirmed; local deletion does not unbind WeChat.
 Agent login emits private local QR PNG metadata as JSONL and continues polling in this same process.
 login requires a new directory; its existing parent must be private and canonical.
 verify defaults: at most 3 polls and 60 seconds. Replies require --reply-text.
@@ -32,7 +36,7 @@ function parse(argv) {
   if (argv.length === 0 || argv.length === 1 && ['help', '--help', '-h'].includes(argv[0])) return { command: 'help' };
   const [command, ...rest] = argv;
   if (!['login', 'status', 'verify', 'logout'].includes(command)) fail('UNKNOWN_COMMAND');
-  const allowed = new Set(['--state-dir', ...(command === 'login' ? ['--agent-confirmed-consent', '--agent-consent-scope'] : []), ...(command === 'verify' ? ['--expect', '--reply-text', '--max-polls', '--timeout-seconds'] : [])]);
+  const allowed = new Set(['--state-dir', ...(['login', 'logout'].includes(command) ? ['--agent-confirmed-consent', '--agent-consent-scope'] : []), ...(command === 'verify' ? ['--expect', '--reply-text', '--max-polls', '--timeout-seconds'] : [])]);
   const flags = {};
   for (let i = 0; i < rest.length;) {
     const flag = rest[i];
@@ -46,11 +50,12 @@ function parse(argv) {
   const stateDir = path.resolve(flags['--state-dir']);
   if (stateDir === path.parse(stateDir).root || /[\x00-\x1f\x7f]/u.test(stateDir) || stateDir.split(path.sep).some(part => ['.openclaw', '.hermes'].includes(part.toLowerCase()))) fail('STATE_DIR_FORBIDDEN');
   const result = { command, stateDir };
-  if (command === 'login') {
+  if (['login', 'logout'].includes(command)) {
     const agentMode = flags['--agent-confirmed-consent'] === true;
     const scope = flags['--agent-consent-scope'];
-    if ((agentMode || scope !== undefined) && (!agentMode || scope !== 'new-binding,owner-scan,local-credentials')) fail('AGENT_CONSENT_SCOPE_REQUIRED');
-    if (agentMode && (!path.isAbsolute(flags['--state-dir']) || flags['--state-dir'] !== path.normalize(flags['--state-dir']))) fail('AGENT_ABSOLUTE_STATE_DIR_REQUIRED');
+    const requiredScope = command === 'login' ? 'new-binding,owner-scan,local-credentials' : 'local-credentials,local-verify-state';
+    if ((agentMode || scope !== undefined) && (!agentMode || scope !== requiredScope)) fail('AGENT_CONSENT_SCOPE_REQUIRED');
+    if (agentMode && (!path.isAbsolute(flags['--state-dir']) || flags['--state-dir'] !== (command === 'logout' ? stateDir : path.normalize(flags['--state-dir'])))) fail('AGENT_ABSOLUTE_STATE_DIR_REQUIRED');
     result.agentMode = agentMode;
   }
   if (command === 'verify') {
@@ -71,7 +76,7 @@ async function checkDirectory(directory, exactPrivate = true) {
   return stat;
 }
 
-async function readCredential(stateDir) {
+async function readCredential(stateDir, withIdentity = false) {
   const directory = await checkDirectory(stateDir);
   const filename = path.join(stateDir, 'credentials.json');
   const before = await fs.lstat(filename);
@@ -89,7 +94,7 @@ async function readCredential(stateDir) {
     const fields = ['schemaVersion', 'provider', 'baseUrl', 'botToken', 'botId', 'ownerUserId', 'createdAtMs'];
     if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).length !== fields.length || fields.some(key => !Object.hasOwn(value, key)) || value.schemaVersion !== 1 || value.provider !== 'tencent-weixin-ilink' || value.baseUrl !== WEIXIN_BINDING_PROTOCOL.origin || typeof value.botToken !== 'string' || !/^[\x21-\x7e]{1,4096}$/.test(value.botToken) || typeof value.botId !== 'string' || !/^[A-Za-z0-9_.@-]{1,256}$/.test(value.botId) || typeof value.ownerUserId !== 'string' || !/^[A-Za-z0-9_.@-]{1,256}$/.test(value.ownerUserId) || !Number.isSafeInteger(value.createdAtMs) || value.createdAtMs < 0) fail('CREDENTIAL_INVALID');
     if (!identity(directory, await checkDirectory(stateDir))) fail('STATE_DIRECTORY_CHANGED');
-    return value;
+    return withIdentity ? { credential: value, directoryIdentity: directory, credentialIdentity: after } : value;
   } finally { await handle.close(); }
 }
 
@@ -269,6 +274,7 @@ async function verify(options, io) {
 }
 
 async function logout(options, io) {
+  if (options.agentMode) return agentLocalLogout(options, io, { checkDirectory, readCredential, fail, identity });
   if (!io.isTerminal) fail('INTERACTIVE_TERMINAL_REQUIRED');
   await readCredential(options.stateDir);
   if (await io.ask('Delete only these local Dots WeChat credentials and verify state? This does not unbind WeChat remotely. Type DELETE LOCAL DOTS WECHAT: ') !== 'DELETE LOCAL DOTS WECHAT') fail('CONSENT_NOT_GIVEN');

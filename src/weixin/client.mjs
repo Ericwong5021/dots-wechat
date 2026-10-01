@@ -5,8 +5,9 @@ const ORIGIN = 'https://ilinkai.weixin.qq.com';
 const VERSION = '2.4.9';
 const VERSION_NUMBER = String((2 << 16) | (4 << 8) | 9);
 const MAX_BODY_BYTES = 262144;
-const MAX_MESSAGES = 128;
-const MAX_SESSION_MESSAGES = 1024;
+export const WEIXIN_TEXT_LIMITS = Object.freeze({ providerBatchMessages: 128, retainedMessages: 1024 });
+const MAX_MESSAGES = WEIXIN_TEXT_LIMITS.providerBatchMessages;
+const MAX_SESSION_MESSAGES = WEIXIN_TEXT_LIMITS.retainedMessages;
 const UINT64_MAX = 18446744073709551615n;
 const OUTCOMES = new Set(['IN_FLIGHT', 'OUTCOME_UNKNOWN', 'API_ACCEPTED', 'REJECTED', 'SESSION_EXPIRED', 'EXPIRED_CONTEXT']);
 
@@ -336,9 +337,8 @@ export function createWeixinTextClient(options = {}) {
     const blocked = state();
     if (blocked) return pollResult(blocked);
     if (polling) return pollResult('BUSY');
-    if (durable) {
-      try { wallTime(); } catch { blockStorage(); return pollResult('STORAGE_BLOCKED'); }
-    }
+    if (durable && !(await prunePending())) return pollResult('STORAGE_BLOCKED');
+    if (state()) return pollResult(state());
     if (ledger.size >= MAX_SESSION_MESSAGES) return pollResult('SESSION_LIMIT');
     polling = true;
     try {
@@ -352,9 +352,10 @@ export function createWeixinTextClient(options = {}) {
       const batch = body.msgs === undefined ? [] : body.msgs;
       const hasSuccessShape = body.ret === 0 || body.errcode === 0 || Array.isArray(body.msgs) || typeof body.get_updates_buf === 'string';
       if (!hasSuccessShape || !Array.isArray(batch) || batch.length > MAX_MESSAGES || (body.get_updates_buf !== undefined && (typeof body.get_updates_buf !== 'string' || body.get_updates_buf.length > 16384))) return pollResult('PROTOCOL_ERROR');
-      if (ledger.size + batch.length > MAX_SESSION_MESSAGES) return pollResult('SESSION_LIMIT');
+      if (durable && !(await prunePending())) return pollResult('STORAGE_BLOCKED');
+      if (state()) return pollResult(state());
       const messages = [];
-      const staged = durable ? new Map(ledger) : ledger;
+      const staged = new Map(ledger);
       let receivedAtMs;
       if (durable) {
         try { receivedAtMs = wallTime(); } catch { blockStorage(); return pollResult('STORAGE_BLOCKED'); }
@@ -367,17 +368,18 @@ export function createWeixinTextClient(options = {}) {
           rejectedCount++;
           continue;
         }
+        if (staged.size >= MAX_SESSION_MESSAGES) return pollResult('SESSION_LIMIT');
         const record = { contextToken: message.context_token, text, createdAt: now(), createdAtMs: receivedAtMs, clientId: `dots-${randomUUID()}`, outcome: null };
         staged.set(id, record);
-        messages.push(durable ? [id, record] : attachInbound(id, record));
+        messages.push([id, record]);
       }
       const nextCursor = body.get_updates_buf || cursor;
       if (durable) {
         if (!(await persist(staged, nextCursor))) return pollResult('STORAGE_BLOCKED');
         if (state()) return pollResult(state());
-        ledger = staged;
-        for (let index = 0; index < messages.length; index++) messages[index] = attachInbound(...messages[index]);
       }
+      ledger = staged;
+      for (let index = 0; index < messages.length; index++) messages[index] = attachInbound(...messages[index]);
       cursor = nextCursor;
       return pollResult('OK', messages, rejectedCount);
     } finally {

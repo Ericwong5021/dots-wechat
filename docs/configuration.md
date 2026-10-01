@@ -40,7 +40,7 @@
 4. 完成 callback challenge、HTTPS/DNS/TLS 验证、签名投递、订阅期限与撤销、重启后的安全处理。当前本地合成接口不能当成生产适配器。
 5. 本人在**已有目标 dot**中建立有限期限订阅，核对该 dot 的可见事件及其真实回传工具调用，再在同一微信私聊确认收到回复，记录脱敏关联与分段延迟。
 
-项目候选事件是 `weixin.owner_message`，回传工具是 `weixin.deliver_owner_reply`，状态工具是 `weixin.get_message_status`。它们是项目接口名称，不代表已注册到用户的插件。SSE 目录通知不能代替 Events webhook 订阅。
+项目候选事件是 `weixin.owner_message`，回传工具是 `weixin.deliver_owner_reply`，状态工具是 `weixin.get_message_status`。它们是项目接口名称，不代表已注册到用户的插件。SSE 目录通知不能代替 Events webhook 订阅。新本地字节/注入投递、身份检查点与有界容量的源码和未实现边界见 [本地接口契约](local-contracts.md)；它们没有启用真实模式。
 
 官方参考：[MCP Events](https://developers.openai.com/plugins/build/mcp-events)、[Secure MCP Tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels)。普通工具的 No Authentication 支持不能证明真实个人事件已有可信身份；具体安全模型仍需审阅。
 

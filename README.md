@@ -4,7 +4,7 @@
 
 English: Ask your existing dot to install the local gateway and send you a private QR image. This requires authorized execution on your Mac/Linux machine and native private image attachments. Ongoing text conversations through the existing dot remain unverified.
 
-> **持续文字自动闭环未验收。430 项本地测试通过，仅合成响应与 loopback；不能证明真实 dot 已接通。**
+> **持续文字自动闭环未验收。589 项本地测试通过，仅合成响应与 loopback；不能证明真实 dot 已接通。**
 
 ## 复制这一段给你已有的 dot
 
@@ -25,10 +25,10 @@ English: Ask your existing dot to install the local gateway and send you a priva
 
 本项目是依据腾讯公开 [iLink 协议参考](https://github.com/Tencent/openclaw-weixin/blob/24de5c9eb0dd5e595d7e2d090ed8a3f82870d42c/docs/protocol.md)编写的兼容研究原型，不是腾讯或 OpenAI 官方产品。协议变化、账号/地区资格可能影响可用性；连续语音、媒体、群聊与其他联系人未验证。默认 MCP 禁用真实消息处理，本地测试与微信固定回复都不能证明 D 已完成。
 
-代理登录接口已定义；它的确认 flags 只是非 TTY 技术声明，不能代替你在真实会话中的明确授权。二维码须由具备能力的 dot 私下发送，不能把本机路径写成附件已经送达。持续文字自动回传未验收；语音和双向文件仅记录为 D 通过后的下一阶段，不在此次实现范围内。
+代理登录与明确批准后的本机撤销接口已定义；它的确认 flags 只是非 TTY 技术声明，不能代替你在真实会话中的明确授权。二维码须由具备能力的 dot 私下发送，不能把本机路径写成附件已经送达。持续文字自动回传未验收；语音和双向文件仅记录为 D 通过后的下一阶段，不在此次实现范围内。
 
 ## 技术文档与许可
 
-[安装细节](docs/installation.md)、[配置与数据流](docs/configuration.md)、[停止与撤销](docs/revocation.md)、[故障排查](docs/troubleshooting.md)供执行安装的 dot 或维护者查阅。用户入口是上面的单段指令。
+[安装细节](docs/installation.md)、[配置与数据流](docs/configuration.md)、[停止与撤销](docs/revocation.md)、[故障排查](docs/troubleshooting.md)、[本地接口与容量边界](docs/local-contracts.md)供执行安装的 dot 或维护者查阅。用户入口是上面的单段指令。
 
 原创代码使用 [MIT](LICENSE)；46 个依赖与腾讯协议参考的 47 份许可完整保留，见 [第三方说明](THIRD_PARTY_NOTICES.md)、[许可清单](licenses-manifest.json)和 [来源](provenance.json)。默认 MCP 身份为 `dots-wechat-local`，仅监听 loopback，真实 backend 禁用；没有开机自启或自动隧道。

@@ -14,7 +14,8 @@
       "source": "experiments/wechat-dot-poc/weixin-client.mjs",
       "target": "src/weixin/client.mjs",
       "sourceSha256": "59514f766c020a1620498aee805e44006ffc8f80d1fc19d23d33e4c6a6699012",
-      "targetSha256": "59514f766c020a1620498aee805e44006ffc8f80d1fc19d23d33e4c6a6699012"
+      "targetSha256": "b84b7261eaac3c134263b71bcafb6599e453e274446e1b885fb148796ff0950e",
+      "extractionTargetSha256": "59514f766c020a1620498aee805e44006ffc8f80d1fc19d23d33e4c6a6699012"
     },
     {
       "source": "experiments/wechat-dot-poc/private-state-store.mjs",
@@ -69,7 +70,8 @@
       "source": "experiments/wechat-dot-poc/service/backend.mjs",
       "target": "src/mcp/backend.mjs",
       "sourceSha256": "6c11cea4809d9a6e1b858713d9dd452247555d012cec71a0090ed68bf6202dab",
-      "targetSha256": "80a4d1261f70a5a2c3105c238f83b161294ecd575c06412d296e14d7a92971d8"
+      "targetSha256": "b031db659b381f18e4b73be187b54a4a6cc7608d4e30f5fc084199e545df35f8",
+      "extractionTargetSha256": "80a4d1261f70a5a2c3105c238f83b161294ecd575c06412d296e14d7a92971d8"
     },
     {
       "source": "experiments/wechat-dot-poc/service/cli.mjs",
@@ -152,7 +154,7 @@
   "newOriginalFiles": [
     {
       "file": "src/weixin/cli.mjs",
-      "sha256": "4a398f84b8e49c53f33db12bd5fb2173a6dfef99aede51ae669a12574fc7bf3e",
+      "sha256": "6fb85fb24a23bf5c56348b2c25f2453916d8fcf5b15d6381bfe9fe265b50215a",
       "description": "Original standalone binding CLI and synthetic regression tests; no upstream implementation copied",
       "initialStandaloneSha256": "87b09777bf3cefba36ddbe762924cc8cd562da50f213b47a69e1d7b02ffc4fdc"
     },
@@ -177,6 +179,48 @@
       "path": "src/onboarding/doctor.test.mjs",
       "sha256": "1558343edc7040815005a3d5a75e61d61bf79cd24445cbd680a3fae6fb02425b",
       "networkEvidence": "synthetic and disabled loopback only"
+    }
+  ],
+  "localContractAdditions": [
+    {
+      "path": "src/mcp/authorization.mjs",
+      "sha256": "72e34cf318d2f4c5b5ada315acdf106cb7441d032b5d4e5fe9edb9819fe6c2ce"
+    },
+    {
+      "path": "src/mcp/authorization.test.mjs",
+      "sha256": "4f9e2b866adf4d4a3e57d0c071d940228c1406feb7f78ebcca6cf200e9a2a28c"
+    },
+    {
+      "path": "src/mcp/event-wire.mjs",
+      "sha256": "ce358ee451360553f01423ec28a2193f2c80277572a8eccbd949dcd7c50a938e"
+    },
+    {
+      "path": "src/mcp/event-wire.test.mjs",
+      "sha256": "f27318dfd3f40938c7c8b703cdca6c660c6d8ba2453da27397d25f13862569d2"
+    },
+    {
+      "path": "src/mcp/injected-event-delivery.mjs",
+      "sha256": "50ca9b2dffc28e4fc18f2bac6ef291dc1ef36e58f3252e8b25a8385796219fa0"
+    },
+    {
+      "path": "src/mcp/injected-event-delivery.test.mjs",
+      "sha256": "8ae18332eeca7bed78d0fabf02c0c6f729c10e478df0aa99540f6bfcf8d11473"
+    },
+    {
+      "path": "src/mcp/lifecycle.test.mjs",
+      "sha256": "2a140580913032086e85a5d968caabc70b3b3c297aef29f1d84c7810e6204cd3"
+    },
+    {
+      "path": "src/weixin/agent-logout.mjs",
+      "sha256": "91d87238156d1f77eac9be869a13cb53f2634411f1777a953265193a1a2393fc"
+    },
+    {
+      "path": "src/weixin/agent-logout.test.mjs",
+      "sha256": "f612ab4a3ad20e9c26cdea54f8c15c586079cd363cd47ba6ac9ec1ea0536b758"
+    },
+    {
+      "path": "src/weixin/client.continuity.test.mjs",
+      "sha256": "3595ba8398e123ebeb5b01e0f7958f033803f871044d19e3f1b9a9e7b6221dd2"
     }
   ]
 }

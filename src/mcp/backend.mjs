@@ -1,5 +1,6 @@
 import { createHmac } from 'node:crypto';
 import { createGatewayStatusReader, gatewayStatusTool } from '../status/status.mjs';
+import { WEIXIN_TEXT_LIMITS } from '../weixin/client.mjs';
 
 const PRINCIPAL = ['tenantId', 'subject', 'grantId', 'bindingId', 'watchId', 'generation', 'revision'];
 const CORRELATION = ['request_id', 'message_id', 'event_id', 'subscription_id', 'binding_id', 'generation'];
@@ -249,7 +250,7 @@ export function createLoopbackBackend(options = {}) {
     const batch = await weixin[pendingOnly ? 'pendingMessages' : 'getUpdates']();
     await checkpoint(initial, context, 'weixin.owner.ingress', signal);
     ownedSubscription(sub.subscriptionId, initial);
-    demand(batch?.status === 'OK' && Array.isArray(batch.messages) && batch.messages.length <= 100, 'WEIXIN_INGRESS_UNAVAILABLE');
+    demand(batch?.status === 'OK' && Array.isArray(batch.messages) && batch.messages.length <= (pendingOnly ? WEIXIN_TEXT_LIMITS.retainedMessages : WEIXIN_TEXT_LIMITS.providerBatchMessages), 'WEIXIN_INGRESS_UNAVAILABLE');
     const results = [];
     for (const inbound of batch.messages) {
       demand(plain(inbound) && id(inbound.messageId) && textValid(inbound.text, 4000, 16000), 'INVALID_INBOUND_CAPABILITY');

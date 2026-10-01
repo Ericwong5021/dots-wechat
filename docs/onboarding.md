@@ -69,6 +69,16 @@ CLI 首次输出一条 JSONL `QR_READY`，包含 `qrPngPath`、`generatedAtMs`�
 
 ## 停止、撤销与报告
 
-用户要求停止时，dot 取消并关闭本轮进程，拒绝继续发送。删除本机凭据需要明确同意并使用仓库当前提供的安全代理撤销入口；没有入口时报告阻塞，不代填旧 TTY 确认。用户在微信实际界面处理远端解绑，本地删除不等于远端吊销。若未来 D 创建了资源，还须分别核对 unsubscribe、grant、隧道和新运行 key 的撤销。
+用户要求停止时，dot 取消并关闭本轮进程，拒绝继续发送。停止进程、安装授权和 login 授权不自动授权删除凭据。删除本机凭据前，向本人展示确切的规范绝对状态目录，说明将删除其中 `credentials.json` 与 `verify-state.json` 并在成功后移除空目录，以及这不会吊销远端绑定或 token；取得当前真实会话中的明确同意。
+
+获准后，由 dot 使用当前源码的安全代理入口，路径必须换为实际获准目录：
+
+```text
+node src/weixin/cli.mjs logout --state-dir ABSOLUTE_APPROVED_EXISTING_DIRECTORY --agent-confirmed-consent --agent-consent-scope local-credentials,local-verify-state
+```
+
+两个 flags 只作非 TTY 技术声明，不是加密 owner 证明，不产生或扩大用户授权；不能代填旧 TTY 确认或复用 login scope。活动锁、未知文件、gateway state、不安全目录/文件或身份变化均停止，本轮不强删锁、不递归清理、不扫描旧目录。版本不支持该入口时报告具体阻塞，保持撤销未执行。
+
+`LOCAL_LOGOUT` 仅表示本轮指定范围的本地清理完成；`remoteRevocation: NOT_ATTEMPTED`、`remoteRevocationConfirmed: false` 表示远端未尝试、未证实。`LOCAL_LOGOUT_UNKNOWN` 表示本地整体清理未确认完成，结合逐文件已确认事实报告部分结果，不自动重试或擦除剩余状态。命令不猜测腾讯远端 revocation API。用户在微信实际界面处理远端解绑，以对应实际证据核对。本地删除不能作为远端吊销证明。若未来 D 创建了资源，还须分别核对 unsubscribe、grant、隧道和新运行 key 的撤销。
 
 最终逐项报告 A/B/C/D 的“通过、未执行、失败或阻塞”，给出必要的脱敏证据和下一步。不得把二维码、token、账号 ID、聊天正文、原始响应或私人截图写入 Git、公开 issue、安装报告或测试日志。

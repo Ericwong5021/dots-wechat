@@ -19,7 +19,9 @@ cd ~/project/dots-wechat
 node src/weixin/cli.mjs logout --state-dir "$(pwd -P)/.runtime/weixin-local"
 ```
 
-`logout` 要求交互终端，并由本人精确键入 `DELETE LOCAL DOTS WECHAT`。它删除本机 `credentials.json`、`verify-state.json` 与空的绑定目录；发现未知文件时拒绝删除，不清理其他账号或项目。
+普通 `logout` 要求交互终端，并由本人精确键入 `DELETE LOCAL DOTS WECHAT`。它删除本机 `credentials.json`、`verify-state.json` 与空的绑定目录；发现未知文件时拒绝删除，不清理其他账号或项目。
+
+具备本机执行能力的代理可在本人明确批准确切目录、本地凭据和 verify state 删除范围后，使用 `--agent-confirmed-consent --agent-consent-scope local-credentials,local-verify-state`；路径必须是获准的规范绝对目录。flags 只是非 TTY 技术声明，不是 owner 身份证明。代理成功返回 `LOCAL_LOGOUT`；部分失败返回 `LOCAL_LOGOUT_UNKNOWN` 和已确认的逐文件事实，不自动重试。远端始终为 `NOT_ATTEMPTED`、未证实。活动锁和未知文件拒绝删除，不强删锁。完整执行流程见 [onboarding](onboarding.md#停止撤销与报告)。
 
 此操作会丢失本机保存的恢复与防重信息。它只能证明本机文件被删除，不能证明远端 token 被吊销、云备份被清除或磁盘已安全擦除。日后测试使用新绑定，不通过丢弃状态重试旧消息。
 
