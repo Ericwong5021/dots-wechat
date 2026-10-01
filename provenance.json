@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "implementation": "Original adapter and gateway source extracted into independent clean repository; no runtime data or private hardware dependencies copied",
+  "sourceRevision": "866182b78559db3b9e4dfaf91499d8df6832ae71",
+  "sourceFilesWereUncommitted": true,
+  "files": [
+    {
+      "source": "experiments/wechat-dot-poc/binding.mjs",
+      "target": "src/weixin/binding.mjs",
+      "sourceSha256": "6eff8cf195277a67367f20c5da6a817d20ee10d2ecf5e2037e36c8386f492799",
+      "targetSha256": "6eff8cf195277a67367f20c5da6a817d20ee10d2ecf5e2037e36c8386f492799"
+    },
+    {
+      "source": "experiments/wechat-dot-poc/weixin-client.mjs",
+      "target": "src/weixin/client.mjs",
+      "sourceSha256": "59514f766c020a1620498aee805e44006ffc8f80d1fc19d23d33e4c6a6699012",
+      "targetSha256": "59514f766c020a1620498aee805e44006ffc8f80d1fc19d23d33e4c6a6699012"
+    },
+    {
+      "source": "experiments/wechat-dot-poc/private-state-store.mjs",
+      "target": "src/weixin/private-state-store.mjs",
+      "sourceSha256": "58406dfa8ff57ea4d1d9922055c4f917a35279740e2b57731b5c585e5549d190",
+      "targetSha256": "58406dfa8ff57ea4d1d9922055c4f917a35279740e2b57731b5c585e5549d190"
+    },
+    {
+      "source": "experiments/wechat-dot-poc/binding.test.mjs",
+      "target": "src/weixin/binding.test.mjs",
+      "sourceSha256": "7843b210ae6888a928745fe572fb7579fcd909aa504d0bd34594839f58763a3f",
+      "targetSha256": "e4bbb20b75c95831512337a572090413c7cc48a7f285a1d146c7a24aa27081d2"
+    },
+    {
+      "source": "experiments/wechat-dot-poc/weixin-client.test.mjs",
+      "target": "src/weixin/client.test.mjs",
+      "sourceSha256": "e00d9037a66507d498ed7d64b4966d999535eac510f29990ad747290b34b3ed6",
+      "targetSha256": "6fdb977eb59bf4c5943fd26d6cb080bf76cdedff3dca9399dbcb443950d09fcb"
+    },
+    {
+      "source": "experiments/wechat-dot-poc/weixin-client.durable.test.mjs",
+      "target": "src/weixin/client.durable.test.mjs",
+      "sourceSha256": "fb8d1e0d7a953117208548a018de5f27b2327009381dc1b05673e5223d6b1295",
+      "targetSha256": "e859ff7e2921e6f5deae0106d6790602fc6b456524910f6d3298a84adbddacc6"
+    },
+    {
+      "source": "experiments/wechat-dot-poc/weixin-send-semantics.test.mjs",
+      "target": "src/weixin/send-semantics.test.mjs",
+      "sourceSha256": "2c86b7501faf96761782d302c2e9fea72c3ffb89342df28b0f5476134d64ae55",
+      "targetSha256": "9b8ab4f2976560b2516627e0c0661fd7975a635495269ac5c6a94a367ea9817f"
+    },
+    {
+      "source": "experiments/wechat-dot-poc/private-state-store.test.mjs",
+      "target": "src/weixin/private-state-store.test.mjs",
+      "sourceSha256": "bb9338742d8356d69e253a8b83547f5f5a871a5a489dce7b106bb9fbbe958c59",
+      "targetSha256": "bb9338742d8356d69e253a8b83547f5f5a871a5a489dce7b106bb9fbbe958c59"
+    },
+    {
+      "source": "experiments/wechat-dot-poc/weixin-state-integration.test.mjs",
+      "target": "src/weixin/state-integration.test.mjs",
+      "sourceSha256": "a7fb56ef51df4dc91d54c7f9686c233331d3d7da67e7e9c43bf46167846c9939",
+      "targetSha256": "07f973e09bb2c402897a73397db58f9c817fc9e705038fcac07c125006748112"
+    },
+    {
+      "source": "experiments/wechat-dot-poc/service/server.mjs",
+      "target": "src/mcp/server.mjs",
+      "sourceSha256": "6df29bbcbf547c44d946afde4f7c8d67ee4de1e50986e3640e7225157c9169a0",
+      "targetSha256": "6c6804b423247e864393d9c62ba58d84ac138d6f86da0cc3f974494f4a68f693"
+    },
+    {
+      "source": "experiments/wechat-dot-poc/service/backend.mjs",
+      "target": "src/mcp/backend.mjs",
+      "sourceSha256": "6c11cea4809d9a6e1b858713d9dd452247555d012cec71a0090ed68bf6202dab",
+      "targetSha256": "80a4d1261f70a5a2c3105c238f83b161294ecd575c06412d296e14d7a92971d8"
+    },
+    {
+      "source": "experiments/wechat-dot-poc/service/cli.mjs",
+      "target": "src/mcp/cli.mjs",
+      "sourceSha256": "bea527a5b585be6b13911654648359cbaf29699cd7192e899b78deb5142aa84f",
+      "targetSha256": "bea527a5b585be6b13911654648359cbaf29699cd7192e899b78deb5142aa84f"
+    },
+    {
+      "source": "experiments/wechat-dot-poc/service/server.test.mjs",
+      "target": "src/mcp/server.test.mjs",
+      "sourceSha256": "05784458ef265fe265016a23b0269c2931296cb10ab00e3865ff0ee164e2253c",
+      "targetSha256": "2b1865c7d0cc4d9b35bea2fc771ca2e2a02ff2738cb82a22f66fec262fa8df93"
+    },
+    {
+      "source": "experiments/wechat-dot-poc/service/backend.test.mjs",
+      "target": "src/mcp/backend.test.mjs",
+      "sourceSha256": "05f0e8e571ab314c64b1a31363803a83b763111ae00b076b65858b41379943d2",
+      "targetSha256": "877d01ff6c28690469e19061e6f4b18e535a897ea5328818a02a9604a98cd531"
+    },
+    {
+      "source": "experiments/wechat-dot-poc/service/pipeline.test.mjs",
+      "target": "src/mcp/pipeline.test.mjs",
+      "sourceSha256": "ddc209b9fecb4d2ff625c221b14c402171eb3d666d3b30d4afa3de94a69210e7",
+      "targetSha256": "c6df42375f800a4b8ecc7a8736b21de461097d16bd57baa86b01f29bbabbca52"
+    },
+    {
+      "source": "experiments/wechat-dot-poc/service/http-guards.test.mjs",
+      "target": "src/mcp/http-guards.test.mjs",
+      "sourceSha256": "0976f5e120c6fd4f35fae8a753fc10c3b66313d22374e73e414c8c0a947c8a69",
+      "targetSha256": "0976f5e120c6fd4f35fae8a753fc10c3b66313d22374e73e414c8c0a947c8a69"
+    },
+    {
+      "source": "experiments/wechat-dot-poc/service/cli.test.mjs",
+      "target": "src/mcp/cli.test.mjs",
+      "sourceSha256": "40fdbeae519a5809a9883affc83fc2b903ed110dfa41a867bdba229bf21d72fb",
+      "targetSha256": "40fdbeae519a5809a9883affc83fc2b903ed110dfa41a867bdba229bf21d72fb"
+    },
+    {
+      "source": "experiments/wechat-dot-poc/status/status.mjs",
+      "target": "src/status/status.mjs",
+      "sourceSha256": "075d1c23d96d2ff24118daf2c212077d0d3045ae1506076a9d21db3955d137ea",
+      "targetSha256": "075d1c23d96d2ff24118daf2c212077d0d3045ae1506076a9d21db3955d137ea"
+    },
+    {
+      "source": "experiments/wechat-dot-poc/status/status.test.mjs",
+      "target": "src/status/status.test.mjs",
+      "sourceSha256": "960ea5b523741271fee2e22dd39d00f2e7943e5294534be4e0cd7cfd0f3bbbfd",
+      "targetSha256": "f0e470e5d8886351fe0745b28db13c7c8286b122d0a16db233da4174883e776b"
+    },
+    {
+      "source": "packages/dot-bridge/journal/journal.mjs",
+      "target": "src/journal/journal.mjs",
+      "sourceSha256": "5797e7973cfcc02b727e31e83b94b8211391d50a7a1fd594b1a85eb58d6c8508",
+      "targetSha256": "0d75df5b7114522a17c8ae807b0242d6648ce2e71a8a5ba94240c5b52bbc2a3d"
+    },
+    {
+      "source": "packages/dot-bridge/journal/journal.test.mjs",
+      "target": "src/journal/journal.test.mjs",
+      "sourceSha256": "2fe2b6ced8d52b86fc5876aaf5d847564b14fff5021856fa6d99f3bd54188254",
+      "targetSha256": "1d8fe19855b0200fc975c7eed540c407a40936a2b941f59fc80bcc8c426e269a"
+    }
+  ],
+  "protocolReference": {
+    "repository": "https://github.com/Tencent/openclaw-weixin",
+    "revision": "24de5c9eb0dd5e595d7e2d090ed8a3f82870d42c",
+    "version": "2.4.9",
+    "license": "MIT",
+    "references": [
+      "docs/protocol.md",
+      "src/api/api.ts",
+      "src/api/types.ts",
+      "src/auth/login-qr.ts",
+      "src/auth/accounts.ts",
+      "src/messaging/send.ts"
+    ]
+  },
+  "newOriginalFiles": [
+    {
+      "file": "src/weixin/cli.mjs",
+      "sha256": "87b09777bf3cefba36ddbe762924cc8cd562da50f213b47a69e1d7b02ffc4fdc",
+      "description": "Original standalone binding CLI and synthetic regression tests; no upstream implementation copied"
+    },
+    {
+      "file": "src/weixin/cli.test.mjs",
+      "sha256": "81adab40725165a16d75eb32183e911ad39da5e5a58e1bf6fbc11e89212d3c4d",
+      "description": "Original standalone binding CLI and synthetic regression tests; no upstream implementation copied"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "dots-wechat",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node src/mcp/cli.mjs",
+    "test": "node --test src/*/*.test.mjs",
+    "weixin": "node src/weixin/cli.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/node": "2.1.0",
+    "@modelcontextprotocol/server": "2.2.0",
+    "qrcode": "1.5.4"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "2.2.0"
+  },
+  "description": "Owner-only WeChat iLink compatibility client and local MCP Events prototype",
+  "license": "MIT"
+}

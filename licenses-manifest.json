@@ -1,0 +1,381 @@
+{
+  "source": "Actual installed exact-version packages; protocol reference license preserved separately",
+  "files": [
+    {
+      "package": "@hono/node-server",
+      "version": "1.19.17",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/hono--node-server--1.19.17--LICENSE",
+      "sha256": "6895190430d809c4c57a7582ecc2f99acbc2ea39a5dfad20262a41d5b3e91733"
+    },
+    {
+      "package": "@modelcontextprotocol/client",
+      "version": "2.2.0",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "Apache-2.0 transition with retained original MIT contributions; documentation terms in full notice",
+      "file": "licenses/modelcontextprotocol--client--2.2.0--LICENSE",
+      "sha256": "0382b0057770ca05e9c350a50aa3b1c1fea84da0bc81d723bf00b9aa841be58a"
+    },
+    {
+      "package": "@modelcontextprotocol/core",
+      "version": "2.2.0",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "Apache-2.0 transition with retained original MIT contributions; documentation terms in full notice",
+      "file": "licenses/modelcontextprotocol--core--2.2.0--LICENSE",
+      "sha256": "0382b0057770ca05e9c350a50aa3b1c1fea84da0bc81d723bf00b9aa841be58a"
+    },
+    {
+      "package": "@modelcontextprotocol/node",
+      "version": "2.1.0",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "Apache-2.0 transition with retained original MIT contributions; documentation terms in full notice",
+      "file": "licenses/modelcontextprotocol--node--2.1.0--LICENSE",
+      "sha256": "0382b0057770ca05e9c350a50aa3b1c1fea84da0bc81d723bf00b9aa841be58a"
+    },
+    {
+      "package": "@modelcontextprotocol/server",
+      "version": "2.2.0",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "Apache-2.0 transition with retained original MIT contributions; documentation terms in full notice",
+      "file": "licenses/modelcontextprotocol--server--2.2.0--LICENSE",
+      "sha256": "0382b0057770ca05e9c350a50aa3b1c1fea84da0bc81d723bf00b9aa841be58a"
+    },
+    {
+      "package": "ansi-regex",
+      "version": "5.0.1",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/ansi-regex--5.0.1--license",
+      "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+    },
+    {
+      "package": "ansi-styles",
+      "version": "4.3.0",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/ansi-styles--4.3.0--license",
+      "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+    },
+    {
+      "package": "camelcase",
+      "version": "5.3.1",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/camelcase--5.3.1--license",
+      "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+    },
+    {
+      "package": "cliui",
+      "version": "6.0.0",
+      "npmDeclaredLicense": "ISC",
+      "actualLicense": "ISC",
+      "file": "licenses/cliui--6.0.0--LICENSE.txt",
+      "sha256": "2dc0465729366c3a7890dfa9e972a1ba7048a26c02116fb8b419a6a1ac110149"
+    },
+    {
+      "package": "color-convert",
+      "version": "2.0.1",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/color-convert--2.0.1--LICENSE",
+      "sha256": "693866fc419c6f61c8570438ec00659d156ec2b4d4a4d04091711f5f11a365d4"
+    },
+    {
+      "package": "color-name",
+      "version": "1.1.4",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/color-name--1.1.4--LICENSE",
+      "sha256": "c064f7a3e353bc1bc977f3c897941c75ef763f44f41677e0a15370ca0853d6e2"
+    },
+    {
+      "package": "cross-spawn",
+      "version": "7.0.6",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/cross-spawn--7.0.6--LICENSE",
+      "sha256": "aaa78451b6fecd1b9c4594c796c133c0e90cad100372ff8bc6de615e9ef9adf1"
+    },
+    {
+      "package": "decamelize",
+      "version": "1.2.0",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/decamelize--1.2.0--license",
+      "sha256": "6fb9754611c20f6649f68805e8c990e83261f29316e29de9e6cedae607b8634c"
+    },
+    {
+      "package": "dijkstrajs",
+      "version": "1.0.3",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/dijkstrajs--1.0.3--LICENSE.md",
+      "sha256": "c46324e45a005413535a6fb7a97e9eacd3cc6bf30335b7d5c10b8ee3af9e60c2"
+    },
+    {
+      "package": "emoji-regex",
+      "version": "8.0.0",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/emoji-regex--8.0.0--LICENSE-MIT.txt",
+      "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a"
+    },
+    {
+      "package": "eventsource",
+      "version": "3.0.7",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/eventsource--3.0.7--LICENSE",
+      "sha256": "f683a72ffe6a9675b5507af22fe0f448d8c8de3da1e14f139d370a7e6a54a23e"
+    },
+    {
+      "package": "eventsource-parser",
+      "version": "3.1.1",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/eventsource-parser--3.1.1--LICENSE",
+      "sha256": "835eb611a23301b27115ca1be9f754c876e643ceb7fe63049c6b50609a1cafeb"
+    },
+    {
+      "package": "find-up",
+      "version": "4.1.0",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/find-up--4.1.0--license",
+      "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+    },
+    {
+      "package": "get-caller-file",
+      "version": "2.0.5",
+      "npmDeclaredLicense": "ISC",
+      "actualLicense": "ISC",
+      "file": "licenses/get-caller-file--2.0.5--LICENSE.md",
+      "sha256": "902dbb4154679fb2b8d7c33878183f45b268d01eae5e5033dddaa8852d45f213"
+    },
+    {
+      "package": "hono",
+      "version": "4.13.12",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/hono--4.13.12--LICENSE",
+      "sha256": "a6ab98e5c77b9070c443eaff2ff81034a6f8cc05a7524d5098eb0f24defa0115"
+    },
+    {
+      "package": "is-fullwidth-code-point",
+      "version": "3.0.0",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/is-fullwidth-code-point--3.0.0--license",
+      "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+    },
+    {
+      "package": "isexe",
+      "version": "2.0.0",
+      "npmDeclaredLicense": "ISC",
+      "actualLicense": "ISC",
+      "file": "licenses/isexe--2.0.0--LICENSE",
+      "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+    },
+    {
+      "package": "jose",
+      "version": "6.2.12",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/jose--6.2.12--LICENSE.md",
+      "sha256": "8078b0829d6c3e9ecde2f003e1966e4cad3efc6e7a640efbab0313cc166b1af1"
+    },
+    {
+      "package": "locate-path",
+      "version": "5.0.0",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/locate-path--5.0.0--license",
+      "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+    },
+    {
+      "package": "p-limit",
+      "version": "2.3.0",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/p-limit--2.3.0--license",
+      "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+    },
+    {
+      "package": "p-locate",
+      "version": "4.1.0",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/p-locate--4.1.0--license",
+      "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+    },
+    {
+      "package": "p-try",
+      "version": "2.2.0",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/p-try--2.2.0--license",
+      "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+    },
+    {
+      "package": "path-exists",
+      "version": "4.0.0",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/path-exists--4.0.0--license",
+      "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+    },
+    {
+      "package": "path-key",
+      "version": "3.1.1",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/path-key--3.1.1--license",
+      "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+    },
+    {
+      "package": "pkce-challenge",
+      "version": "5.0.1",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/pkce-challenge--5.0.1--LICENSE",
+      "sha256": "feb87a2e0c305de3464cc44077da5393c52d8ca6362d37427157d04ec6f4510d"
+    },
+    {
+      "package": "pngjs",
+      "version": "5.0.0",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/pngjs--5.0.0--LICENSE",
+      "sha256": "176b07a18c0bb3836aaeb61088fd0bf11a38f66e6f15e3fbda85faa225250d6e"
+    },
+    {
+      "package": "qrcode",
+      "version": "1.5.4",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/qrcode--1.5.4--license",
+      "sha256": "8df47c6ad9ac2c41eb9b2a72def9908959da0ede8dadd56c7b249c1bdb0c5ce6"
+    },
+    {
+      "package": "require-directory",
+      "version": "2.1.1",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/require-directory--2.1.1--LICENSE",
+      "sha256": "a92e52eb1fa7cd746e3827bf01d3a3589bbc8e1e51348b1da042aad165525ad1"
+    },
+    {
+      "package": "require-main-filename",
+      "version": "2.0.0",
+      "npmDeclaredLicense": "ISC",
+      "actualLicense": "ISC",
+      "file": "licenses/require-main-filename--2.0.0--LICENSE.txt",
+      "sha256": "365496ca1f56da40b23c9815fc40fa9005847b2f8f8fd1c1a4929ef25ec8cd1d"
+    },
+    {
+      "package": "set-blocking",
+      "version": "2.0.0",
+      "npmDeclaredLicense": "ISC",
+      "actualLicense": "ISC",
+      "file": "licenses/set-blocking--2.0.0--LICENSE.txt",
+      "sha256": "365496ca1f56da40b23c9815fc40fa9005847b2f8f8fd1c1a4929ef25ec8cd1d"
+    },
+    {
+      "package": "shebang-command",
+      "version": "2.0.0",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/shebang-command--2.0.0--license",
+      "sha256": "69dee148a2cc470554dfa7142e830662062394d0fe67cddd379aba90dc60d6b3"
+    },
+    {
+      "package": "shebang-regex",
+      "version": "3.0.0",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/shebang-regex--3.0.0--license",
+      "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+    },
+    {
+      "package": "string-width",
+      "version": "4.2.3",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/string-width--4.2.3--license",
+      "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+    },
+    {
+      "package": "strip-ansi",
+      "version": "6.0.1",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/strip-ansi--6.0.1--license",
+      "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+    },
+    {
+      "package": "which",
+      "version": "2.0.2",
+      "npmDeclaredLicense": "ISC",
+      "actualLicense": "ISC",
+      "file": "licenses/which--2.0.2--LICENSE",
+      "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+    },
+    {
+      "package": "which-module",
+      "version": "2.0.1",
+      "npmDeclaredLicense": "ISC",
+      "actualLicense": "ISC",
+      "file": "licenses/which-module--2.0.1--LICENSE",
+      "sha256": "852bf81203aa93aa89afc9f881ebb035322dc7334aaceff435c557634c94a815"
+    },
+    {
+      "package": "wrap-ansi",
+      "version": "6.2.0",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/wrap-ansi--6.2.0--license",
+      "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+    },
+    {
+      "package": "y18n",
+      "version": "4.0.3",
+      "npmDeclaredLicense": "ISC",
+      "actualLicense": "ISC",
+      "file": "licenses/y18n--4.0.3--LICENSE",
+      "sha256": "2034cce3b6fafcddd642c4175e01d3ddfc332a53b9f20fdc46b1466dc89ac469"
+    },
+    {
+      "package": "yargs",
+      "version": "15.4.1",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/yargs--15.4.1--LICENSE",
+      "sha256": "2f1a503bfab84b3ba7393627308b3274501e459e3b5185bbb56bbf16cb1602d4"
+    },
+    {
+      "package": "yargs-parser",
+      "version": "18.1.3",
+      "npmDeclaredLicense": "ISC",
+      "actualLicense": "ISC",
+      "file": "licenses/yargs-parser--18.1.3--LICENSE.txt",
+      "sha256": "365496ca1f56da40b23c9815fc40fa9005847b2f8f8fd1c1a4929ef25ec8cd1d"
+    },
+    {
+      "package": "zod",
+      "version": "4.6.5",
+      "npmDeclaredLicense": "MIT",
+      "actualLicense": "MIT",
+      "file": "licenses/zod--4.6.5--LICENSE",
+      "sha256": "3f1189b28e3866e0d979968d466b78f813f76827cfdca1fbb124cc0a5c8841f8"
+    },
+    {
+      "referenceOnly": true,
+      "package": "Tencent/openclaw-weixin",
+      "revision": "24de5c9eb0dd5e595d7e2d090ed8a3f82870d42c",
+      "actualLicense": "MIT",
+      "file": "licenses/tencent-openclaw-weixin--24de5c9--LICENSE",
+      "sha256": "7f1e8cf099cf03de7c775e33e97e3c950c3a56a9616bb4de6b14d3c911bc5573"
+    }
+  ]
+}
