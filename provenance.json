@@ -63,14 +63,14 @@
       "source": "experiments/wechat-dot-poc/service/server.mjs",
       "target": "src/mcp/server.mjs",
       "sourceSha256": "6df29bbcbf547c44d946afde4f7c8d67ee4de1e50986e3640e7225157c9169a0",
-      "targetSha256": "5777255d4879bdd701f8e2493f1bc6c2485d09d5fe9cd95c4e39832c5136bca9",
+      "targetSha256": "ff05bac27b8e45bba4eb9086896ba99c01321c91505d2e19b15687a0852cfdad",
       "extractionTargetSha256": "6c6804b423247e864393d9c62ba58d84ac138d6f86da0cc3f974494f4a68f693"
     },
     {
       "source": "experiments/wechat-dot-poc/service/backend.mjs",
       "target": "src/mcp/backend.mjs",
       "sourceSha256": "6c11cea4809d9a6e1b858713d9dd452247555d012cec71a0090ed68bf6202dab",
-      "targetSha256": "b031db659b381f18e4b73be187b54a4a6cc7608d4e30f5fc084199e545df35f8",
+      "targetSha256": "de7fddf17ac82fd10cb79ea2be25add6b4c5a805c60582d1aea01b590b043172",
       "extractionTargetSha256": "80a4d1261f70a5a2c3105c238f83b161294ecd575c06412d296e14d7a92971d8"
     },
     {
@@ -221,6 +221,53 @@
     {
       "path": "src/weixin/client.continuity.test.mjs",
       "sha256": "3595ba8398e123ebeb5b01e0f7958f033803f871044d19e3f1b9a9e7b6221dd2"
+    }
+  ],
+  "privateTestAdditions": [
+    {
+      "path": "src/mcp/https-callback-transport.mjs",
+      "sha256": "20722b81e5570c8468dc4e4608c47b5972b20a707b2d5f2cd0800e3a9cb60cdb",
+      "validation": "synthetic only; no actual tunnel or owner authorization"
+    },
+    {
+      "path": "src/mcp/https-callback-transport.test.mjs",
+      "sha256": "26ab9af2ad76a21031ff021b8da6ba1fecf4c3644f4e2ebc3950860f3d46372a",
+      "validation": "synthetic only; no actual tunnel or owner authorization"
+    },
+    {
+      "path": "src/mcp/oauth-http.mjs",
+      "sha256": "34a574075242232deacc6f3a47ff7c3a42498b805a053e85c3be8c605b1f0d8e",
+      "validation": "synthetic only; no actual tunnel or owner authorization"
+    },
+    {
+      "path": "src/mcp/oauth-http.test.mjs",
+      "sha256": "33b7bda735abdcdc6ea2142c1a8aef63363e138859a82e22af70a4379b781bfd",
+      "validation": "synthetic only; no actual tunnel or owner authorization"
+    },
+    {
+      "path": "src/mcp/backend.restricted.test.mjs",
+      "sha256": "5fa034d5bfd5003ddf3bc243d69c441de5ac2367bafc04c7934fa03e6ae933cd",
+      "validation": "synthetic only; no actual tunnel or owner authorization"
+    },
+    {
+      "path": "src/session/hard-lease.mjs",
+      "sha256": "5eebeb1933aa6dc5f17d7f21102a60526bb6b48a85f2480cdf9d8d72ff736222",
+      "validation": "synthetic only; no actual tunnel or owner authorization"
+    },
+    {
+      "path": "src/session/watchdog.mjs",
+      "sha256": "611f1ff2ce2c1431121d2a461a72a84e993b0547637c19f6087c41ead0f8a0c5",
+      "validation": "synthetic only; no actual tunnel or owner authorization"
+    },
+    {
+      "path": "src/session/session-runner.mjs",
+      "sha256": "05ea26a41b2bbd7f2d53edb517b7e24b64778ae9b0fec8797f4d590c4605d400",
+      "validation": "synthetic only; no actual tunnel or owner authorization"
+    },
+    {
+      "path": "src/session/session.test.mjs",
+      "sha256": "2d66da6efc77ee960d4def195e7d15742572b1ce20e93c94e50422eb620e23b8",
+      "validation": "synthetic only; no actual tunnel or owner authorization"
     }
   ]
 }

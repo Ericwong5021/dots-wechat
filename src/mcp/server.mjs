@@ -1,7 +1,9 @@
 import { createServer } from 'node:http';
+import { AsyncLocalStorage } from 'node:async_hooks';
 import { McpServer, ProtocolError, createMcpHandler, fromJsonSchema } from '@modelcontextprotocol/server';
 import { toNodeHandler } from '@modelcontextprotocol/node';
 import { createLoopbackBackend, LoopbackBackendError, loopbackOperationSchemas } from './backend.mjs';
+import { createOAuthHttpGate, PROTECTED_RESOURCE_PATHS } from './oauth-http.mjs';
 
 export const PROTOCOL_VERSION = '2026-07-28';
 export const DEFAULT_LIMITS = Object.freeze({ bodyBytes: 32768, headerBytes: 16384, headerMs: 5000, bodyMs: 10000, callMs: 15000, listenMs: 60000, concurrent: 16, subscriptions: 4 });
@@ -29,7 +31,10 @@ const acceptsBoth = value => {
 };
 
 export async function startLocalMcpService(options = {}) {
-  if (Object.keys(options).some(key => !['port', 'backend', 'resolveContext', 'limits', 'durationMs'].includes(key))) throw new Error('UNSUPPORTED_SERVICE_OPTION');
+  if (Object.keys(options).some(key => !['port', 'backend', 'resolveContext', 'limits', 'durationMs', 'oauth'].includes(key))) throw new Error('UNSUPPORTED_SERVICE_OPTION');
+  if (options.oauth !== undefined && Object.hasOwn(options, 'resolveContext')) throw new Error('OAUTH_CONTEXT_RESOLVER_CONFLICT');
+  const oauth = options.oauth === undefined ? undefined : createOAuthHttpGate(options.oauth);
+  const authenticatedRequests = new AsyncLocalStorage();
   const { port = 8890, backend = createLoopbackBackend(), resolveContext = async () => undefined } = options;
   if (!Number.isSafeInteger(port) || port < 0 || port > 65535) throw new Error('INVALID_PORT');
   if (typeof resolveContext !== 'function') throw new Error('INVALID_CONTEXT_RESOLVER');
@@ -48,7 +53,13 @@ export async function startLocalMcpService(options = {}) {
   };
   const handler = createMcpHandler(async ({ requestInfo }) => {
     let context;
-    try { context = await resolveContext(requestInfo); }
+    try {
+      if (oauth) {
+        const authenticated = authenticatedRequests.getStore();
+        if (!authenticated || authenticated.signal.aborted) throw new Error('HTTP_AUTHENTICATION_REQUIRED');
+        context = authenticated.context;
+      } else context = await resolveContext(requestInfo);
+    }
     catch { throw new ProtocolError(-32001, 'AUTHORIZATION_REJECTED'); }
     const server = new McpServer({ name: 'dots-wechat-local', version: '0.0.1' }, { capabilities: { events: {}, resources: { listChanged: true, subscribe: false } } });
     for (const tool of backend.catalog.tools) {
@@ -104,17 +115,20 @@ export async function startLocalMcpService(options = {}) {
       res.writeHead(200, { 'content-type': 'application/json' });
       return res.end(JSON.stringify({ service: 'dots-wechat-local', transport: 'LOOPBACK_HTTP', protocolVersion: PROTOCOL_VERSION, liveEnabled: false, ...backend.status() }));
     }
+    if (oauth && PROTECTED_RESOURCE_PATHS.includes(req.url)) {
+      if (req.method !== 'GET') { res.setHeader('allow', 'GET'); return respond(res, 405, 'METHOD_NOT_ALLOWED'); }
+      res.writeHead(200, { 'content-type': 'application/json', 'content-length': Buffer.byteLength(oauth.metadata) });
+      return res.end(oauth.metadata);
+    }
     if (req.url !== '/mcp') return respond(res, 404, 'NOT_FOUND');
-    if (req.method !== 'POST') { res.setHeader('allow', 'POST'); return respond(res, 405, 'METHOD_NOT_ALLOWED'); }
-    if (!acceptsBoth(req.headers.accept)) return respond(res, 406, 'ACCEPT_JSON_AND_SSE_REQUIRED');
-    if (req.headers['content-encoding'] !== undefined) return respond(res, 415, 'CONTENT_ENCODING_REJECTED');
-    if (req.headers['mcp-session-id'] !== undefined || req.headers['last-event-id'] !== undefined) return respond(res, 400, 'LEGACY_SESSION_REPLAY_UNSUPPORTED');
     if (inFlight >= limits.concurrent) return respond(res, 503, 'CONCURRENCY_LIMIT');
     inFlight += 1;
     let finished = false;
+    const authenticationAbort = new AbortController();
     const complete = () => {
       if (finished) return;
       finished = true; inFlight -= 1;
+      authenticationAbort.abort();
       clearTimeout(bodyTimer); clearTimeout(callTimer);
     };
     const bodyTimer = setTimeout(() => { respond(res, 408, 'BODY_TIMEOUT'); req.destroy(); }, limits.bodyMs);
@@ -122,7 +136,23 @@ export async function startLocalMcpService(options = {}) {
     bodyTimer.unref(); callTimer.unref();
     req.once('end', () => clearTimeout(bodyTimer));
     res.once('close', complete); res.once('finish', complete);
-    try { await nodeHandler(req, res); }
+    try {
+      let authenticated;
+      if (oauth) {
+        authenticated = await oauth.verify(req, authenticationAbort.signal);
+        if (finished || res.destroyed || res.writableEnded) return;
+        if (!authenticated) {
+          res.setHeader('www-authenticate', oauth.challenge);
+          return respond(res, 401, 'HTTP_AUTHENTICATION_REQUIRED');
+        }
+      }
+      if (req.method !== 'POST') { res.setHeader('allow', 'POST'); return respond(res, 405, 'METHOD_NOT_ALLOWED'); }
+      if (!acceptsBoth(req.headers.accept)) return respond(res, 406, 'ACCEPT_JSON_AND_SSE_REQUIRED');
+      if (req.headers['content-encoding'] !== undefined) return respond(res, 415, 'CONTENT_ENCODING_REJECTED');
+      if (req.headers['mcp-session-id'] !== undefined || req.headers['last-event-id'] !== undefined) return respond(res, 400, 'LEGACY_SESSION_REPLAY_UNSUPPORTED');
+      if (oauth) await authenticatedRequests.run(Object.freeze({ ...authenticated, signal: authenticationAbort.signal }), () => nodeHandler(req, res));
+      else await nodeHandler(req, res);
+    }
     catch { rejected += 1; respond(res, 500, 'TRANSPORT_FAILURE'); if (!res.writableEnded) res.destroy(); }
   });
   http.maxHeadersCount = 0;

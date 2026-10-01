@@ -47,3 +47,5 @@
 ## 独立状态与原项目
 
 本项目创建独立新状态。journal 使用 `dots-wechat-journal/1` 格式，不能直接打开旧实验 journal。提取源码不迁移原项目的凭据、密钥、游标或聊天；现有绑定与回滚材料留在原处。请勿复制旧状态后清除防重记录来重试消息。
+
+限时私有测试的本地源码准备、OAuth/Tunnel具体配置契约和真实身份/运行装配缺口见 [私有测试准备](private-test-preparation.md)。默认CLI继续禁用真实backend，不能从factory接口或合成测试推断已启用。

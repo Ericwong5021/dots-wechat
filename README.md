@@ -4,7 +4,7 @@
 
 English: Ask your existing dot to install the local gateway and send you a private QR image. This requires authorized execution on your Mac/Linux machine and native private image attachments. Ongoing text conversations through the existing dot remain unverified.
 
-> **持续文字自动闭环未验收。589 项本地测试通过，仅合成响应与 loopback；不能证明真实 dot 已接通。**
+> **持续文字自动闭环未验收。669 项本地测试通过，仅合成响应与 loopback；不能证明真实 dot 已接通。**
 
 ## 复制这一段给你已有的 dot
 
@@ -29,6 +29,6 @@ English: Ask your existing dot to install the local gateway and send you a priva
 
 ## 技术文档与许可
 
-[安装细节](docs/installation.md)、[配置与数据流](docs/configuration.md)、[停止与撤销](docs/revocation.md)、[故障排查](docs/troubleshooting.md)、[本地接口与容量边界](docs/local-contracts.md)供执行安装的 dot 或维护者查阅。用户入口是上面的单段指令。
+[安装细节](docs/installation.md)、[配置与数据流](docs/configuration.md)、[停止与撤销](docs/revocation.md)、[故障排查](docs/troubleshooting.md)、[本地接口与容量边界](docs/local-contracts.md)、[限时私有测试准备与缺口](docs/private-test-preparation.md)供执行安装的 dot 或维护者查阅。用户入口是上面的单段指令。
 
 原创代码使用 [MIT](LICENSE)；46 个依赖与腾讯协议参考的 47 份许可完整保留，见 [第三方说明](THIRD_PARTY_NOTICES.md)、[许可清单](licenses-manifest.json)和 [来源](provenance.json)。默认 MCP 身份为 `dots-wechat-local`，仅监听 loopback，真实 backend 禁用；没有开机自启或自动隧道。
