@@ -1,8 +1,15 @@
 # 安装与本人扫码
 
-本文面向 macOS/Linux 上的单人本地实验。要求 Node.js `>=22.13`、npm，以及可访问腾讯固定 HTTPS 原点的网络。原实验使用 Node 22.22.3；新仓库仍需单独验证。
+本文面向 macOS/Linux 上的单人本地实验。要求 Node.js `>=22.13`、npm，以及可访问腾讯固定 HTTPS 原点的网络。本独立仓库使用 Node 22.22.3 通过了本地测试；真实微信绑定、服务资格和 dot 接入仍需按账号分别核验。
 
-> 文档候选：维护者需核对独立仓库安装结果和微信 CLI。GitHub 候选名称是 `Ericwong5021/dots-wechat`，尚未在此教程中确认公开存在，因此不提供可用性未经核实的 clone 命令。先取得审阅过的独立源码，并放在 `~/project/dots-wechat`。
+源码仓库：[Ericwong5021/dots-wechat](https://github.com/Ericwong5021/dots-wechat)。在新机器上取得源码：
+
+```sh
+mkdir -p ~/project
+git clone https://github.com/Ericwong5021/dots-wechat.git ~/project/dots-wechat
+```
+
+已有 `~/project/dots-wechat` 时不要重复克隆或覆盖，直接进入现有仓库。公开原型当前只有合成/loopback 回归证据，不能据此承诺新账号的真实微信或 dot 链路成功。
 
 ## 1. 安装依赖并检查本地代码
 
@@ -45,7 +52,7 @@ chmod 700 .runtime
 
 ## 4. 本人扫码登录
 
-以下接口已与独立 CLI 候选核对，发布前仍需完成独立安装验证。
+以下命令对应独立 CLI；本地合成测试覆盖其行为。真实登录仍须本人扫码并核对官方回执。
 
 ```sh
 cd ~/project/dots-wechat
