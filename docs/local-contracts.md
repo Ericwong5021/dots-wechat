@@ -14,7 +14,7 @@ URL 检查只有语法，`redirect: error` 只是要求注入 transport 遵守�
 
 `src/mcp/authorization.mjs` 要求服务端显式注入已绑定验证请求的外部 verifier，并固定预期的七字段 principal：tenant、subject、grant、binding、watch、generation 和 revision。每个检查点重新调用 verifier，校验到期和主体一致性；仅接受本实例生成的授权快照。它拒绝将 `_meta`、headers、JWT claims 或 `verified: true` 声明直接当成身份。
 
-该模块是结构与检查点契约，不是生产身份验证器。真实 issuer、resource/audience、scope、撤销，以及已有 dot 与微信本人绑定的权威映射仍需实际实现。任意注入的 JavaScript callback 不能凭接口形状获得身份验证权威。它未自动接入 `resolveContext`，也没有 token、OAuth 或新 grant。[MCP 授权规范](https://modelcontextprotocol.io/specification/draft/basic/authorization)提供协议要求，不能提供本应用的用户映射。
+该模块是结构与检查点契约，不是生产身份验证器。OAuth 路径的真实 issuer、resource/audience、scope、撤销及本人微信绑定映射仍需实际实现；当前 dot 的可见关联走实际订阅聊天，不要求 signed personalDotId。私有 Tunnel 的条件性 NoAuthentication 路线另见 [架构核对](private-tunnel-architecture.md)，未由该接口启用。任意注入的 JavaScript callback 不能凭接口形状获得身份验证权威。它未自动接入 `resolveContext`，也没有 token、OAuth 或新 grant。[MCP 授权规范](https://modelcontextprotocol.io/specification/draft/basic/authorization)提供协议要求，不能提供本应用的用户映射。
 
 ## 多轮、容量与重启
 
