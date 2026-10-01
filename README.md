@@ -4,6 +4,8 @@
 
 English: An independent research prototype for forwarding your own Weixin bot messages to an existing personal dot and returning a restricted reply to the same private conversation. The default MCP service runs locally with messaging disabled. The automatic dot round trip has not been accepted yet.
 
+> **验收状态：已有 personal dot 自动闭环未验收。408 项本地测试通过，网络仅为合成响应与 loopback。微信固定回复或手动收发不能证明 dot 自动接入。**
+
 项目依据腾讯公开的 [iLink 协议参考](https://github.com/Tencent/openclaw-weixin/blob/24de5c9eb0dd5e595d7e2d090ed8a3f82870d42c/docs/protocol.md)编写兼容客户端，固定参考 revision `24de5c9eb0dd5e595d7e2d090ed8a3f82870d42c`。它不是腾讯或 OpenAI 官方产品，也不包含整套 OpenClaw/Hermes。使用者需满足服务条款和自身账号资格；公开协议不能保证账号、地区和服务能力可用，协议变化可能使客户端失效。
 
 ## 当前能力
