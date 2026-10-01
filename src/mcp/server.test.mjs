@@ -52,7 +52,7 @@ test('official v2 Client discovers, lists and reads over the actual Node socket'
   const client = new Client({ name: 'synthetic-local-test', version: '1' }, { versionNegotiation: { mode: { pin: PROTOCOL_VERSION } } });
   t.after(() => client.close());
   await client.connect(new StreamableHTTPClientTransport(new URL(service.address.url)));
-  assert.equal(client.getServerVersion().name, 'dots-wechat-wechat-local');
+  assert.equal(client.getServerVersion().name, 'dots-wechat-local');
   assert.equal((await client.listTools()).tools.length, 2);
   const result = await client.readResource({ uri: 'dots-wechat://gateway/status' });
   assert.equal(JSON.parse(result.contents[0].text).configured, false);

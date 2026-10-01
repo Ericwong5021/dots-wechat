@@ -27,3 +27,9 @@
 MCP 的 loopback Host/Origin 检查是默认边界。不要通过设置宽泛 CORS、伪造 owner header、绑定公网地址或增加测试身份来处理拒绝。端点需要新的传输/认证设计时，先完成审阅与授权。
 
 协议变化或账号资格可能导致登录/收发不可用。请以腾讯实际服务反馈和[固定版本协议参考](https://github.com/Tencent/openclaw-weixin/blob/24de5c9eb0dd5e595d7e2d090ed8a3f82870d42c/docs/protocol.md)为依据；本项目不保证绕过限制，也不保证连续语音或商业服务能力。
+
+## dot 代安装与图片交付
+
+本机执行、可续接登录进程和当前用户私有原生图片附件都必须实际可用；不能由云端容器或本机路径推断。缺能力时具体报告并停止依赖步骤，不让用户改用手动终端。`npm run doctor` 无凭据检查 QR 渲染和禁用 loopback MCP，`--help` 不启动登录。
+
+代理登录需在明确新绑定与存储范围授权后使用完整 agent flags。`AGENT_CONSENT_SCOPE_REQUIRED` 是接口参数缺失，不表示用户已经同意；`QR_READY` 不表示图片已交付或绑定已确认。`BINDING_INTERRUPTED` 是主动中止，`LOCAL_BINDING_DEADLINE` 是本地等待到期，`AGENT_VERIFICATION_CODE_UNSUPPORTED` 表示当前代理接口无法完成额外验证码；这些都不应自动刷新二维码。图片上传失败时停止本轮并报告交付失败。本地清理不删除平台已保存的私有附件。

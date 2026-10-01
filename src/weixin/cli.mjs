@@ -9,10 +9,13 @@ import { createWeixinTextClient } from './client.mjs';
 import { createPrivateStateStore } from './private-state-store.mjs';
 
 export const CLI_USAGE = `node src/weixin/cli.mjs login --state-dir PATH
+node src/weixin/cli.mjs login --state-dir ABSOLUTE_PATH --agent-confirmed-consent --agent-consent-scope new-binding,owner-scan,local-credentials
 node src/weixin/cli.mjs status --state-dir PATH
 node src/weixin/cli.mjs verify --state-dir PATH --expect TEXT [--reply-text TEXT] [--max-polls 1..10] [--timeout-seconds 1..120]
 node src/weixin/cli.mjs logout --state-dir PATH
-login and logout require an interactive terminal and typed confirmation.
+Ordinary login and logout require an interactive terminal and typed confirmation.
+Agent login flags only bypass the terminal guard after specific current-session user authorization; installation is not consent.
+Agent login emits private local QR PNG metadata as JSONL and continues polling in this same process.
 login requires a new directory; its existing parent must be private and canonical.
 verify defaults: at most 3 polls and 60 seconds. Replies require --reply-text.
 API_ACCEPTED means provider acceptance, not confirmed delivery; uncertain sends are never retried.
@@ -29,17 +32,27 @@ function parse(argv) {
   if (argv.length === 0 || argv.length === 1 && ['help', '--help', '-h'].includes(argv[0])) return { command: 'help' };
   const [command, ...rest] = argv;
   if (!['login', 'status', 'verify', 'logout'].includes(command)) fail('UNKNOWN_COMMAND');
-  const allowed = new Set(['--state-dir', ...(command === 'verify' ? ['--expect', '--reply-text', '--max-polls', '--timeout-seconds'] : [])]);
+  const allowed = new Set(['--state-dir', ...(command === 'login' ? ['--agent-confirmed-consent', '--agent-consent-scope'] : []), ...(command === 'verify' ? ['--expect', '--reply-text', '--max-polls', '--timeout-seconds'] : [])]);
   const flags = {};
-  for (let i = 0; i < rest.length; i += 2) {
+  for (let i = 0; i < rest.length;) {
     const flag = rest[i];
-    if (!allowed.has(flag) || Object.hasOwn(flags, flag) || typeof rest[i + 1] !== 'string' || rest[i + 1].startsWith('--')) fail('INVALID_ARGUMENTS');
+    if (!allowed.has(flag) || Object.hasOwn(flags, flag)) fail('INVALID_ARGUMENTS');
+    if (flag === '--agent-confirmed-consent') { flags[flag] = true; i++; continue; }
+    if (typeof rest[i + 1] !== 'string' || rest[i + 1].startsWith('--')) fail('INVALID_ARGUMENTS');
     flags[flag] = rest[i + 1];
+    i += 2;
   }
   if (!flags['--state-dir']) fail('STATE_DIR_REQUIRED');
   const stateDir = path.resolve(flags['--state-dir']);
   if (stateDir === path.parse(stateDir).root || /[\x00-\x1f\x7f]/u.test(stateDir) || stateDir.split(path.sep).some(part => ['.openclaw', '.hermes'].includes(part.toLowerCase()))) fail('STATE_DIR_FORBIDDEN');
   const result = { command, stateDir };
+  if (command === 'login') {
+    const agentMode = flags['--agent-confirmed-consent'] === true;
+    const scope = flags['--agent-consent-scope'];
+    if ((agentMode || scope !== undefined) && (!agentMode || scope !== 'new-binding,owner-scan,local-credentials')) fail('AGENT_CONSENT_SCOPE_REQUIRED');
+    if (agentMode && (!path.isAbsolute(flags['--state-dir']) || flags['--state-dir'] !== path.normalize(flags['--state-dir']))) fail('AGENT_ABSOLUTE_STATE_DIR_REQUIRED');
+    result.agentMode = agentMode;
+  }
   if (command === 'verify') {
     const expect = flags['--expect'];
     const replyText = flags['--reply-text'];
@@ -88,49 +101,96 @@ async function renderLocalQr(payload, filename) {
 }
 
 async function login(options, io) {
-  if (!io.isTerminal) fail('INTERACTIVE_TERMINAL_REQUIRED');
-  await checkDirectory(path.dirname(options.stateDir), false);
+  if (!options.agentMode && !io.isTerminal) fail('INTERACTIVE_TERMINAL_REQUIRED');
+  const parentIdentity = await checkDirectory(path.dirname(options.stateDir), options.agentMode);
   try { await fs.lstat(options.stateDir); fail('STATE_DIR_ALREADY_EXISTS'); } catch (error) { if (error.code !== 'ENOENT') throw error; }
-  const consent = await io.ask('This creates a NEW Weixin bot binding for your own account and stores its token on this machine. Scan the QR yourself. Type BIND MY WECHAT to consent: ');
-  if (consent !== 'BIND MY WECHAT') fail('CONSENT_NOT_GIVEN');
+  if (!options.agentMode) {
+    const consent = await io.ask('This creates a NEW Weixin bot binding for your own account and stores its token on this machine. Scan the QR yourself. Type BIND MY WECHAT to consent: ');
+    if (consent !== 'BIND MY WECHAT') fail('CONSENT_NOT_GIVEN');
+  }
   try { await io.prepareQr(); } catch { fail('QR_DEPENDENCY_UNAVAILABLE'); }
   let qrDirectory;
   let localDeadline;
-  const binding = io.createBinding({ enabled: true, fetchImpl: io.fetchImpl });
+  let localDeadlineAtMs;
+  let stopReason;
+  const fetchImpl = (url, init) => new Promise((resolve, reject) => {
+    let finished = false;
+    const finish = (fn, value) => {
+      if (finished) return;
+      finished = true;
+      init.signal.removeEventListener('abort', abort);
+      fn(value);
+    };
+    const abort = () => finish(reject, new Error('TRANSPORT_ABORTED'));
+    if (init.signal.aborted) { abort(); return; }
+    init.signal.addEventListener('abort', abort, { once: true });
+    Promise.resolve().then(() => finished ? undefined : io.fetchImpl(url, init)).then(value => finish(resolve, value), error => finish(reject, error));
+  });
+  const binding = io.createBinding({ enabled: true, fetchImpl, now: io.wallNow });
   const cancellation = new AbortController();
-  const cancel = () => { cancellation.abort(); binding.dispose(); };
-  process.on('SIGINT', cancel);
-  process.on('SIGTERM', cancel);
+  const cancel = reason => { stopReason ??= reason; cancellation.abort(); binding.dispose(); };
+  const interrupt = () => cancel('BINDING_INTERRUPTED');
+  const checkStopped = () => {
+    if (stopReason) fail(stopReason);
+    if (localDeadlineAtMs !== undefined && io.wallNow() >= localDeadlineAtMs) {
+      cancel('LOCAL_BINDING_DEADLINE');
+      fail(stopReason);
+    }
+  };
+  io.signalSource.on('SIGINT', interrupt);
+  io.signalSource.on('SIGTERM', interrupt);
   try {
     const started = await binding.requestQrOnce();
-    localDeadline = setTimeout(cancel, Math.max(0, started.expiresAtMs - Date.now()));
+    localDeadlineAtMs = started.expiresAtMs;
+    checkStopped();
+    localDeadline = setTimeout(() => cancel('LOCAL_BINDING_DEADLINE'), Math.max(0, started.expiresAtMs - io.wallNow()));
     qrDirectory = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'dots-wechat-qr-')));
     await fs.chmod(qrDirectory, 0o700);
     const qrPath = path.join(qrDirectory, 'binding.png');
     await io.renderQr(binding.qrDisplayPayload(started.session).payload, qrPath);
-    io.write(`Open this local PNG and scan it with your own WeChat. Local waiting is limited to five minutes; the provider may expire it earlier. The PNG is removed when login ends:\n${pathToFileURL(qrPath).href}\n`);
+    await checkDirectory(qrDirectory);
+    const qrStat = await fs.lstat(qrPath);
+    if (!qrStat.isFile() || qrStat.uid !== process.geteuid() || (qrStat.mode & 0o7777) !== 0o600 || qrStat.nlink !== 1) fail('QR_ARTIFACT_INSECURE');
+    checkStopped();
+    const generatedAtMs = io.wallNow();
+    if (!Number.isSafeInteger(generatedAtMs) || generatedAtMs < 0) fail('INVALID_CLOCK');
+    if (generatedAtMs >= started.expiresAtMs) { cancel('LOCAL_BINDING_DEADLINE'); fail(stopReason); }
+    if (options.agentMode) io.result({ status: 'QR_READY', qrPngPath: qrPath, generatedAtMs, localWaitDeadlineMs: started.expiresAtMs, privateArtifact: true, providerExpiryKnown: false });
+    else io.write(`Open this local PNG and scan it with your own WeChat. Local waiting is limited to five minutes; the provider may expire it earlier. The PNG is removed when login ends:\n${pathToFileURL(qrPath).href}\n`);
     let verifyCode;
     for (let poll = 0; poll < WEIXIN_BINDING_PROTOCOL.maxPolls; poll++) {
+      checkStopped();
       const result = await binding.pollOnce(started.session, verifyCode === undefined ? {} : { verifyCode });
+      checkStopped();
       verifyCode = undefined;
       if (result.status === 'confirmed') {
+        if (!identity(parentIdentity, await checkDirectory(path.dirname(options.stateDir), options.agentMode))) fail('STATE_DIRECTORY_CHANGED');
         await binding.saveConfirmedBinding(result.proof, { credentialPath: path.join(options.stateDir, 'credentials.json'), allowPersistence: true });
         io.result({ status: 'BOUND', ownerRestricted: true, localPersistence: true });
         return 0;
       }
-      if (result.status === 'need_verifycode') verifyCode = await io.ask('Enter the verification code shown by WeChat: ', { signal: cancellation.signal });
+      if (result.status === 'need_verifycode') {
+        if (options.agentMode) fail('AGENT_VERIFICATION_CODE_UNSUPPORTED');
+        verifyCode = await io.ask('Enter the verification code shown by WeChat: ', { signal: cancellation.signal });
+      }
       else if (['expired', 'verify_code_blocked'].includes(result.status)) fail('BINDING_EXPIRED_RESTART_WITH_NEW_CONSENT');
       else if (result.status === 'redirect_requires_verification') fail('PROVIDER_REDIRECT_UNSUPPORTED');
       else if (!['wait', 'scaned', 'scaned_but_redirect'].includes(result.status)) fail('BINDING_STATUS_UNSUPPORTED');
       await io.pause(1000);
     }
     fail('BINDING_POLL_LIMIT');
+  } catch (error) {
+    checkStopped();
+    throw error;
   } finally {
     clearTimeout(localDeadline);
-    process.off('SIGINT', cancel);
-    process.off('SIGTERM', cancel);
     binding.dispose();
-    if (qrDirectory) await fs.rm(qrDirectory, { recursive: true, force: true });
+    try {
+      if (qrDirectory) await fs.rm(qrDirectory, { recursive: true, force: true });
+    } finally {
+      io.signalSource.off('SIGINT', interrupt);
+      io.signalSource.off('SIGTERM', interrupt);
+    }
   }
 }
 
@@ -246,6 +306,7 @@ export async function runCli(argv, overrides = {}) {
     createClient: createWeixinTextClient,
     createStateStore: createPrivateStateStore,
     signalSource: process,
+    wallNow: Date.now,
     prepareQr: overrides.renderQr ? async () => {} : async () => { await import('qrcode'); },
     ...overrides,
   };

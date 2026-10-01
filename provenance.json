@@ -62,7 +62,8 @@
       "source": "experiments/wechat-dot-poc/service/server.mjs",
       "target": "src/mcp/server.mjs",
       "sourceSha256": "6df29bbcbf547c44d946afde4f7c8d67ee4de1e50986e3640e7225157c9169a0",
-      "targetSha256": "6c6804b423247e864393d9c62ba58d84ac138d6f86da0cc3f974494f4a68f693"
+      "targetSha256": "5777255d4879bdd701f8e2493f1bc6c2485d09d5fe9cd95c4e39832c5136bca9",
+      "extractionTargetSha256": "6c6804b423247e864393d9c62ba58d84ac138d6f86da0cc3f974494f4a68f693"
     },
     {
       "source": "experiments/wechat-dot-poc/service/backend.mjs",
@@ -74,13 +75,15 @@
       "source": "experiments/wechat-dot-poc/service/cli.mjs",
       "target": "src/mcp/cli.mjs",
       "sourceSha256": "bea527a5b585be6b13911654648359cbaf29699cd7192e899b78deb5142aa84f",
-      "targetSha256": "bea527a5b585be6b13911654648359cbaf29699cd7192e899b78deb5142aa84f"
+      "targetSha256": "2a6a8397e3d00265b74464b2beccfb98bc5d146632cf046919763ddc2fd9eed1",
+      "extractionTargetSha256": "bea527a5b585be6b13911654648359cbaf29699cd7192e899b78deb5142aa84f"
     },
     {
       "source": "experiments/wechat-dot-poc/service/server.test.mjs",
       "target": "src/mcp/server.test.mjs",
       "sourceSha256": "05784458ef265fe265016a23b0269c2931296cb10ab00e3865ff0ee164e2253c",
-      "targetSha256": "2b1865c7d0cc4d9b35bea2fc771ca2e2a02ff2738cb82a22f66fec262fa8df93"
+      "targetSha256": "69ca4f8d8f99732faf7e88ac8512c6edbd25dee886573ee243cb0253fc10fb65",
+      "extractionTargetSha256": "2b1865c7d0cc4d9b35bea2fc771ca2e2a02ff2738cb82a22f66fec262fa8df93"
     },
     {
       "source": "experiments/wechat-dot-poc/service/backend.test.mjs",
@@ -104,7 +107,8 @@
       "source": "experiments/wechat-dot-poc/service/cli.test.mjs",
       "target": "src/mcp/cli.test.mjs",
       "sourceSha256": "40fdbeae519a5809a9883affc83fc2b903ed110dfa41a867bdba229bf21d72fb",
-      "targetSha256": "40fdbeae519a5809a9883affc83fc2b903ed110dfa41a867bdba229bf21d72fb"
+      "targetSha256": "6923c8f9e36791aab6588559ff78934c7965892fd8d2f7f0f8847108cd980a23",
+      "extractionTargetSha256": "40fdbeae519a5809a9883affc83fc2b903ed110dfa41a867bdba229bf21d72fb"
     },
     {
       "source": "experiments/wechat-dot-poc/status/status.mjs",
@@ -148,13 +152,31 @@
   "newOriginalFiles": [
     {
       "file": "src/weixin/cli.mjs",
-      "sha256": "87b09777bf3cefba36ddbe762924cc8cd562da50f213b47a69e1d7b02ffc4fdc",
-      "description": "Original standalone binding CLI and synthetic regression tests; no upstream implementation copied"
+      "sha256": "4a398f84b8e49c53f33db12bd5fb2173a6dfef99aede51ae669a12574fc7bf3e",
+      "description": "Original standalone binding CLI and synthetic regression tests; no upstream implementation copied",
+      "initialStandaloneSha256": "87b09777bf3cefba36ddbe762924cc8cd562da50f213b47a69e1d7b02ffc4fdc"
     },
     {
       "file": "src/weixin/cli.test.mjs",
       "sha256": "81adab40725165a16d75eb32183e911ad39da5e5a58e1bf6fbc11e89212d3c4d",
       "description": "Original standalone binding CLI and synthetic regression tests; no upstream implementation copied"
+    }
+  ],
+  "agentFirstAdditions": [
+    {
+      "path": "src/weixin/agent-login.test.mjs",
+      "sha256": "043bba4580554b1c16297f13600989b0ff696abc849997e96d398982ba7b1ede",
+      "networkEvidence": "synthetic and disabled loopback only"
+    },
+    {
+      "path": "src/onboarding/doctor.mjs",
+      "sha256": "ef4e248b79ecdc60046eb934fc874a8529c3fb5893c105df4fbf3faad14695cb",
+      "networkEvidence": "synthetic and disabled loopback only"
+    },
+    {
+      "path": "src/onboarding/doctor.test.mjs",
+      "sha256": "1558343edc7040815005a3d5a75e61d61bf79cd24445cbd680a3fae6fb02425b",
+      "networkEvidence": "synthetic and disabled loopback only"
     }
   ]
 }

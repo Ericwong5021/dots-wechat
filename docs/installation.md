@@ -1,6 +1,6 @@
-# 安装与本人扫码
+# 安装与本人扫码（供 dot 或维护者执行）
 
-本文面向 macOS/Linux 上的单人本地实验。要求 Node.js `>=22.13`、npm，以及可访问腾讯固定 HTTPS 原点的网络。本独立仓库使用 Node 22.22.3 通过了本地测试；真实微信绑定、服务资格和 dot 接入仍需按账号分别核验。
+用户请先复制 README 的单段指令给自己的 dot；下文命令由具备权限的 dot 或维护者执行。本文面向 macOS/Linux 上的单人本地实验。要求 Node.js `>=22.13`、npm，以及可访问腾讯固定 HTTPS 原点的网络。本独立仓库使用 Node 22.22.3 通过了本地测试；真实微信绑定、服务资格和 dot 接入仍需按账号分别核验。
 
 源码仓库：[Ericwong5021/dots-wechat](https://github.com/Ericwong5021/dots-wechat)。在新机器上取得源码：
 
@@ -18,6 +18,7 @@ cd ~/project/dots-wechat
 node --version
 npm ci --ignore-scripts --no-audit --no-fund
 npm test
+npm run doctor
 ```
 
 `npm ci` 要求仓库包含对应锁文件。根目录 `npm test` 运行 `node --test src/*/*.test.mjs`。测试使用临时目录和合成请求，不需要扫码、不读取你的运行时目录。测试通过仍不能证明腾讯收发、ChatGPT 接入或用户可见送达。
@@ -63,7 +64,7 @@ node src/weixin/cli.mjs login --state-dir "$(pwd -P)/.runtime/weixin-local"
 
 本人用微信扫描该次二维码，在微信显示的官方页面确认；不要把二维码、验证数字或登录回执发送给别人。申请二维码使用空 `local_token_list`，不复用旧 token。只有本人确认后的此次新凭据会写入所选本机目录。
 
-如需要额外验证，按 CLI 支持的官方流程完成；如出现新原点、旧绑定导入或 CLI 未支持的验证步骤，停止并排查，不绕过。只有 `confirmed` 后安全保存完成才算本机登录成功；`scaned` 仅表示扫描过。二维码过期后重新执行登录需要新的本人操作。
+如需要额外验证，按 CLI 支持的官方流程完成；如出现新原点、旧绑定导入或 CLI 未支持的验证步骤，停止并排查，不绕过。agent-first 的授权、非 TTY 接口与私有图片交付见 [首次安装流程](onboarding.md)。只有 `confirmed` 后安全保存完成才算本机登录成功；`scaned` 仅表示扫描过。二维码过期后重新执行登录需要新的本人操作。
 
 ## 5. 检查状态并核验一条文字
 

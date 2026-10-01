@@ -9,7 +9,8 @@
   "scripts": {
     "start": "node src/mcp/cli.mjs",
     "test": "node --test src/*/*.test.mjs",
-    "weixin": "node src/weixin/cli.mjs"
+    "weixin": "node src/weixin/cli.mjs",
+    "doctor": "node src/onboarding/doctor.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/node": "2.1.0",

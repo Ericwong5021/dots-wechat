@@ -42,3 +42,17 @@ test('actual foreground CLI exposes disabled health and SIGTERM closes only its 
   assert.equal((await exit)[0], 0);
   await assert.rejects(fetch(new URL('/healthz', line.url), { signal: AbortSignal.timeout(1000) }));
 });
+
+
+test('MCP CLI help succeeds and exits without starting a listener or login', async () => {
+  for (const flag of ['--help', '-h', 'help']) {
+    const process = child(['cli.mjs', flag]);
+    let stdout = '', stderr = '';
+    process.stdout.on('data', value => { stdout += value; });
+    process.stderr.on('data', value => { stderr += value; });
+    assert.equal((await once(process, 'close', { signal: AbortSignal.timeout(3000) }))[0], 0);
+    assert.match(stdout, /Disabled foreground MCP on 127\.0\.0\.1 only/);
+    assert.doesNotMatch(stdout, /"event":"listening"/);
+    assert.equal(stderr, '');
+  }
+});

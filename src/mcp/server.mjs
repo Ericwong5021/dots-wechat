@@ -50,7 +50,7 @@ export async function startLocalMcpService(options = {}) {
     let context;
     try { context = await resolveContext(requestInfo); }
     catch { throw new ProtocolError(-32001, 'AUTHORIZATION_REJECTED'); }
-    const server = new McpServer({ name: 'dots-wechat-wechat-local', version: '0.0.1' }, { capabilities: { events: {}, resources: { listChanged: true, subscribe: false } } });
+    const server = new McpServer({ name: 'dots-wechat-local', version: '0.0.1' }, { capabilities: { events: {}, resources: { listChanged: true, subscribe: false } } });
     for (const tool of backend.catalog.tools) {
       server.registerTool(tool.name, { description: tool.description, inputSchema: fromJsonSchema(tool.inputSchema), ...(tool.outputSchema ? { outputSchema: fromJsonSchema(tool.outputSchema) } : {}), annotations: tool.annotations }, async (args, ctx) => {
         try {
@@ -102,7 +102,7 @@ export async function startLocalMcpService(options = {}) {
     if (closed) return respond(res, 503, 'SERVICE_CLOSING');
     if (req.url === '/healthz' && req.method === 'GET') {
       res.writeHead(200, { 'content-type': 'application/json' });
-      return res.end(JSON.stringify({ service: 'dots-wechat-wechat-local', transport: 'LOOPBACK_HTTP', protocolVersion: PROTOCOL_VERSION, liveEnabled: false, ...backend.status() }));
+      return res.end(JSON.stringify({ service: 'dots-wechat-local', transport: 'LOOPBACK_HTTP', protocolVersion: PROTOCOL_VERSION, liveEnabled: false, ...backend.status() }));
     }
     if (req.url !== '/mcp') return respond(res, 404, 'NOT_FOUND');
     if (req.method !== 'POST') { res.setHeader('allow', 'POST'); return respond(res, 405, 'METHOD_NOT_ALLOWED'); }
